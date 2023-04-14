@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+use PhpCsFixer\Finder;
+use PhpCsFixer\Config;
+
+$finder = Finder::create()
+    ->in(__DIR__ . '/src')
+    ->in(__DIR__ . '/tests')
+    ->name('*.php')
+;
+
+return (new Config())
+    ->setRules([
+        '@PSR2' => true,
+        '@PSR12' => true,
+        'array_syntax' => [
+            'syntax' => 'short',
+        ],
+        'no_unused_imports' => true,
+        'multiline_whitespace_before_semicolons' => [
+            'strategy' => 'new_line_for_chained_calls'
+        ],
+        'global_namespace_import' => ['import_classes' => true],
+        'cast_spaces' => true,
+    ])
+    ->setFinder($finder)
+    ->setCacheFile(__DIR__ . '/var/cache/php-cs')
+;

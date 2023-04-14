@@ -1,0 +1,16 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+parameters:
+    memoryLimitFile: var/cache/1024MB
+    level: max
+    tmpDir: var/cache/phpstan
+    parallel:
+        processTimeout: 300.0
+        maximumNumberOfProcesses: 1
+    fileExtensions:
+        - php
+    paths:
+        - src
+        - tests
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
