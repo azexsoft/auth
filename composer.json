@@ -1,4 +1,19 @@
 {
+    "name": "azexsoft/auth",
+    "type": "library",
+    "description": "Azexsoft Authentication",
+    "keywords": [
+        "authentication",
+        "auth"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aliaksandr Zakharenka",
+            "email": "aliaksandr@zakharenka.me"
+        }
+    ],
+    "minimum-stability": "stable",
     "require": {
         "php": "^8.1",
         "psr/http-factory": "^1.0",
