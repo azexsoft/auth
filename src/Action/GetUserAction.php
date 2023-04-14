@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Azexsoft\Auth\Controller;
+namespace Azexsoft\Auth\Action;
 
 use Azexsoft\Auth\IdentityInterface;
 use Psr\Http\Message\ResponseFactoryInterface;

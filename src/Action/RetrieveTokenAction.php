@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Azexsoft\Auth\Controller;
+namespace Azexsoft\Auth\Action;
 
 use Azexsoft\Auth\AuthenticationServiceInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class RefreshTokenAction implements RequestHandlerInterface
+final class RetrieveTokenAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly ResponseFactoryInterface $responseFactory,
@@ -20,9 +20,11 @@ final class RefreshTokenAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var array{refreshToken: string} $body */
+        /** @var array{username: string, password: string} $body */
         $body = $request->getParsedBody();
-        $token = $this->authenticationService->refreshAuthToken($body['refreshToken']);
+
+        $user = $this->authenticationService->findUserByCredentials($body['username'], $body['password']);
+        $token = $this->authenticationService->retrieveAuthToken($user);
 
         $response = $this->responseFactory->createResponse()
             ->withHeader('Content-Type', 'application/json')
