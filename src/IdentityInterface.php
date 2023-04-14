@@ -6,6 +6,8 @@ namespace Azexsoft\Auth;
 
 interface IdentityInterface
 {
+    public function getId(): int|string;
+
     public function getUsername(): string;
 
     public function getPassword(): string;
