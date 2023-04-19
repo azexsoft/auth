@@ -20,14 +20,20 @@ final class RefreshTokenAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var array{refreshToken: string} $body */
-        $body = $request->getParsedBody();
-        $token = $this->authenticationService->refreshAuthToken($body['refreshToken']);
+        $requestBody = $request->getParsedBody();
 
-        $response = $this->responseFactory->createResponse()
+        if (!is_string($requestBody['refreshToken'] ?? null)) {
+            $code = 400;
+            $responseBody = ['message' => 'Field "refreshToken" must exist and be a string'];
+        } else {
+            $code = 200;
+            $responseBody = $this->authenticationService->refreshAuthToken($requestBody['refreshToken']);
+        }
+
+        $response = $this->responseFactory->createResponse($code)
             ->withHeader('Content-Type', 'application/json')
         ;
-        $response->getBody()->write(json_encode($token, JSON_THROW_ON_ERROR));
+        $response->getBody()->write(json_encode($responseBody, JSON_THROW_ON_ERROR));
         return $response;
     }
 }

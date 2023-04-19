@@ -20,16 +20,21 @@ final class RetrieveTokenAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var array{username: string, password: string} $body */
-        $body = $request->getParsedBody();
+        $requestBody = $request->getParsedBody();
 
-        $user = $this->authenticationService->findUserByCredentials($body['username'], $body['password']);
-        $token = $this->authenticationService->retrieveAuthToken($user);
+        if (!is_string($requestBody['username'] ?? null) || !is_string($requestBody['password'] ?? null)) {
+            $code = 400;
+            $responseBody = ['message' => 'Field "username" and "password" must exist and be a string'];
+        } else {
+            $code = 200;
+            $user = $this->authenticationService->findUserByCredentials($requestBody['username'], $requestBody['password']);
+            $responseBody = $this->authenticationService->retrieveAuthToken($user);
+        }
 
-        $response = $this->responseFactory->createResponse()
+        $response = $this->responseFactory->createResponse($code)
             ->withHeader('Content-Type', 'application/json')
         ;
-        $response->getBody()->write(json_encode($token, JSON_THROW_ON_ERROR));
+        $response->getBody()->write(json_encode($responseBody, JSON_THROW_ON_ERROR));
         return $response;
     }
 }
