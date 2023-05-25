@@ -10,7 +10,5 @@ interface IdentityInterface
 
     public function getUsername(): string;
 
-    public function getPassword(): string;
-
     public function getName(): string;
 }
